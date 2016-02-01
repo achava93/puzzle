@@ -2,6 +2,8 @@
 __author__ = 'Please write your names, separated by commas.'
 __email__ = 'Please write your email addresses, separated by commas.'
 
+from p1_is_complete import *
+from p2_is_consistent import *
 
 def select_unassigned_variable(csp):
     """Selects the next unassigned variable, or None if there is no more unassigned variables
@@ -47,9 +49,16 @@ def backtrack(csp):
 
     If there is a solution, this method returns True; otherwise, it returns False.
     """
-
-    # TODO implement this
-    pass
-
-
-
+    if is_complete(csp):
+        return True
+    uvar = select_unassigned_variable(csp)
+    for value in order_domain_values(uvar, csp):
+        if is_consistent(csp, uvar, value):
+            var.begin_transaction()
+            var.assign(value)
+            outcome = backtrack(csp)
+            if outcome != False:
+                return True
+            var.rollback()
+            #How do you remove the {var = value} from assignment
+    return False
